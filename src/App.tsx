@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { useState } from 'react';
 import './App.css';
+import { Text } from './Text';
 import { Todo } from './Todo';
+import { TodoType } from "./types/todo"
+import { UserProfile } from './UserProfile';
 
-type TodoType = {
-  userId: number
-  id: number
-  title: string
-  completed: boolean
+const user = {
+  name: "Bob",
+  // hobbies: ["映画", "ゲーム"]
 }
 
 export default function App() {
@@ -17,15 +18,20 @@ export default function App() {
     axios
     .get<Array<TodoType>>("https://jsonplaceholder.typicode.com/todos")
     .then((res) => {
-      console.log(res);
       setTodos(res.data)
     })
   }
   return (
     <div className="App">
+      <UserProfile user={user}/>
+      <Text color="red" fontSize="18px" />
       <button onClick={onClickFetchData}>データ取得</button>
       {todos.map((todo)=> (
-        <Todo title={todo.title} userid={todo.userId}></Todo>
+        <Todo
+          key={todo.id}
+          title={todo.title}
+          userId={todo.userId}
+          completed={todo.completed}/>
       ))}
     </div>
   );
